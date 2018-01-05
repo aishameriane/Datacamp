@@ -1,0 +1,158 @@
+---
+title: "Part1"
+author: "Aishameriane"
+date: "30 de dezembro de 2016"
+output: html_document
+---
+
+# Introduction to R - 1
+
+## Part 1 - Intro to Basics
+
+### How it works
+
+No editor você consegue digitar instruções como operações aritméticas para que o R resolva.
+
+Por exemplo, para calcularmos 3 mais 4, basta digitar:
+
+```{r}
+3+4
+```
+
+(o resultado sai com os sinais de `#` por causa do pacote R Markdown, usado para fazer estas notas)
+
+O R utiliza o sinal `#` para indicar os comentários. Isso significa que frases precedidas por ele não serão interpretadas. Os comentários são úteis para que você deixe explicado seu código, assim qualquer pessoa (incluido o seu "eu" futuro) poderá entender.
+
+```{r}
+# O R pulará esta e a próxima linha e executará somente a terceira
+# 3 + 4
+
+4+5
+```
+
+### Arithmetic with R
+
+As operações aritméticas estão implementadas no R e podem ser utilizadas através de seus operadores:
+
+* Adição: `+`
+* Subtração: `-`
+* Multiplicação: `*`
+* Divisão: `/`
+* Exponenciação: `^`
+* Módulo: `%%`
+
+Os primeiros 4 operadores são utilizados da maneira convencional, `3+4` é 3 mais 4, `3-4` é três menos quatro e assim por diante. A exponenciação eleva o número mais à esqueda ao que está imediatamente à direita: `3^2` é 9. Já a operação de módulo retorna o resto da divisão inteira: `5%%3` é 2, já que o 5 é divisível por 3 uma vez e resta o número 2.
+
+Exemplos:
+
+```{r}
+# Adição
+5+5
+```
+
+```{r}
+# Subtração
+5-5
+```
+
+```{r}
+# Multiplicação
+3*5
+```
+
+```{r}
+# Divisão
+# Os parênteses terão o mesmo efeito que na matemática "no papel",
+# as operações entre parênteses são executadas primeiro
+(5+5)/2
+```
+
+```{r}
+# Exponenciação
+3^2
+```
+
+```{r}
+# Módulo
+5%%3
+```
+
+
+### Variable Assignment (1)
+
+Um conceito básico em programação (voltada para estatística) é o conceito de *variável*. Uma variável permite que valores (por exemplo, o número 4 ou a letra a) ou objetos (descrições de funções) no R. O nome da variável pode depois ser utilizado para acessar o que está armazenado nela.
+
+Você pode associar (no sentido de armazenar) o número $4$ na variável `minha_var` com o comando `<-`:
+
+```{r}
+minha_var <- 4
+```
+
+De maneira análoga, podemos armazenar strings (nomes), utilizando sempre aspas para denotar palavras:
+
+```{r}
+minha_palavra <- "banana"
+```
+
+E podemos armazenar variáveis dentro de variáveis:
+
+```{r}
+minha_outra_var<-minha_var
+```
+
+Para exibir uma variável, basta digitar o nome dela no console:
+
+```{r}
+minha_var
+minha_outra_var
+```
+
+### Variable Assignment (2)
+
+Outra possibilidade é combinar variáveis. Por exemplo, podemos somar o valor em `minha_var` com o valor em `minha_outra_var` e armazenar em uma variável `total`.
+
+```{r}
+total <- minha_var + minha_outra_var
+total
+```
+
+### Apples and oranges
+
+No entanto, algumas operações não podem ser feitas se variáveis tiverem tipos de informação incompatíveis. Por exemplo, se uma variável contém uma string e outra contém um número, o R exibe uma mensagem de erro:
+
+```{r}
+minha_var <- 4
+minha_outra_var <- "banana"
+#total <- minha_var + minha_outra_var
+# Está comentado porque dá erro e aí não compila =P
+```
+
+### Basic data types in R
+
+O erro do exemplo anterior nos leva para os tipos de dados (ou variáveis) existentes no R.
+Os 4 tipos básicos são:
+
+1. *Numeric*: números (reais) quaisquer. Por exemplo, $\pi$ (tente digitar `pi` no console, este é um valor "pré-salvo" no R!), $4.000$, $4.5$, etc.
+2. *Integers*: números inteiros. Um *integer* sempre é também do tipo *numeric*;
+3. *Logicals*: os valores `TRUE` e `FALSE` (ou `V` e `F`) são valores lógicos;
+4. *Characters*: usualmente palavras/nomes, coisas que não tem um significado em termos de quantidade.
+
+### What's that data type?
+
+Para saber qual o tipo (classe) de uma variável, usa-se a função `class()`. Com ela, evitamos o erro que tivemos há dois exemplos atrás:
+
+```{r}
+# Declare variables of different types
+my_numeric <- 42
+my_character <- "universe"
+my_logical <- FALSE 
+
+# Check class of my_numeric
+class(my_numeric)
+
+# Check class of my_character
+class(my_character)
+
+# Check class of my_logical
+class(my_logical)
+```
