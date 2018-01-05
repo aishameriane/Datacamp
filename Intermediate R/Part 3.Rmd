@@ -1,0 +1,55 @@
+---
+title: "Part 3"
+author: "Aishameriane Schmidt"
+date: "9 de maio de 2017"
+output: html_document
+---
+
+# Part 3 - Functions
+
+You can think of a function as some type of black-box: you give an input, the black-box processes it and give you an output. For example, consider the `sd()` function, that calculates the standard deviation. If you give to this function a vector containing the values $(1, 5, 6, 7)$, it will return the value `r round(sd(c(1, 5, 6, 7)),4)`. The comand is `sd(c(1, 5, 6, 7))` where the function is `sd()` and it takes `c(1, 5, 6, 7)` as arguments. In this case you have a single argument, a vector containing 4 values. You can also storage your vector into a value `dados` and then ask R to evaluate `sd(dados)`. Also, if you want to reuse the function results in other pieces of your code, you can save the value to another variable, like `desvio <- sd(dados)`.
+
+We are dealing with a simple function, `sd()`, that takes a single argument. Since R has many functions, it is usefull read their documentations before using the `help()` funcion. For example, `help(sd)` or `?sd` exibits the same result. You can see in this help that `sd()` function actually takes two arguments, one of them is `na.rm=FALSE`. This means that you can set the option for removing the `NA`'s, using `na.rm=TRUE` or, if you don't want to remove them, you can specify `na.rm = FALSE`. Since this last option is already the default, you don't need to specify it (although no error message is shown if you do). R knows that `dados` is the argument to put in its `x` because it considers order.
+
+Let's save the values `1,5,6,NA` in a vector: `r values <- c(1,5,6,NA)`. Now, we try to call `sd(values)` to see what happens: `r sd(values)`. The result is equal to `r NA` because the default argument for the function `sd()` is `na.rm = FALSE`, meaning it doesn't remove the `r NA` by default. In order to ignore the missing value, we should write `sd(values, na.rm = TRUE)` and obtain `r sd(values, na.rm = TRUE)`. Since R assigns arguments by order, we can use `sd(values, TRUE)` or use the matching by name, `sd(na.rm = TRUE, x = values)`.
+
+A useful function is `args()`. It returns the arguments of a function. For example, `args(sd)` returns `r args(sd)`.
+
+## Introduction to Functions
+
+
+
+###  Function documentation
+
+###  Use a function
+
+###  Use a function (2)
+
+###  Use a function (3)
+
+###  Functions inside functions
+
+###  Required or optional?
+
+## Writing functions
+
+###  Write yor own function
+
+###  Write yor own function (2)
+
+###  Write yor own function (3)
+
+## Function Scoping
+
+## R passes arguments by value
+
+###  R you functional?
+
+###  R you functional? (2)
+
+## R packages
+
+###  Load an R package
+
+###  Different ways to load a package
+

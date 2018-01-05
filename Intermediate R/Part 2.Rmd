@@ -1,0 +1,512 @@
+---
+title: "Part 2"
+author: "Aishameriane Schmidt"
+date: "9 de maio de 2017"
+output: html_document
+---
+
+# Part 2 - Loops
+
+## While Loop
+
+The while loop is somewhat similar to the `if` statement: it executes the code inside if the condition is true. However, as opposed to the if statement, the while loop will continue to execute this code over and over again as long as the condition is true. The syntax of a while loop is very similar to the if statement, as can be seen in the chunk below:
+
+```{}
+while(condition) {
+  exp
+}
+```
+
+Now we are going to make R increment a counter until it reaches the value 7:
+
+```{r}
+counter <- 1
+
+while(counter < 7){
+  print(paste("The counter is equal to", counter))
+  counter <- counter + 1
+}
+```
+
+**Attention**: the second line inside the `while` loop is essential for its functioning. If we forget this, the code will run indefinitely because the initial value of counter is `0` and this is always less than `7`. We call this line the "increment in the variable". If the line is missing and the code starts running forever, you can use `ctrl + c` or the stop sign in the RStudio interface. The message is clear: always make sure your while code has an and.
+
+The `break` statement simply breaks out of the while loop: when R finds it, it abandons the currently active while loop. Suppose we want R to stop our while loop from before as soon as the value of `counter` is divisible by `5`. We can do this with a break statement:
+
+```{r}
+counter <- 1
+
+while(counter < 7){
+  if (counter %% 5 == 0) {
+    print("The counter is divisible by 5.")
+    break
+  }
+  print(paste("The counter is equal to", counter))
+  counter <- counter + 1
+}
+```
+
+You can call the `counter` variable and check that its value is now equal to 5.
+
+###  Write a while loop
+
+Let's get you started with building a `while` loop from the ground up. Have another look at its recipe:
+
+```{}
+while (condition) {
+  expr
+}
+```
+
+Remember that the `condition` part of this recipe should become `FALSE` at some point during the execution. Otherwise, the `while` loop will go on indefinitely. To skip the code when this happens, you can manually stop the code by pressiong `ctrol + C` or hitting the stop function in RStudio interface.
+
+Have a look at the code on the right; it initializes the speed variables and already provides a while loop template to get you started.
+
+Code a while loop with the following characteristics:
+
+* The condition of the while loop should check if speed is higher than 30.
+* Inside the body of the while loop, print out "Slow down!".
+* Inside the body of the while loop, decrease the speed by 7 units. This step is crucial; otherwise your while loop will never stop.
+
+Have a look at the code below; it initializes the speed variables and already provides a `while` loop template to get you started.
+
+```{r}
+# Initialize the speed variable
+speed <- 64
+
+# Code the while loop
+while (speed > 30) {
+  print("Slow down!")
+  speed <- speed - 7
+}
+
+# Print out the speed variable
+speed
+```
+
+### Throw in more conditionals
+
+In the previous exercise, you simulated the interaction between a driver and a driver's assistant: When the speed was too high, "Slow down!" got printed out to the console, resulting in a decrease of your speed by 7 units.
+
+There are several ways in which you could make your driver's assistant more advanced. For example, the assistant could give you different messages based on your speed or provide you with a current speed at a given moment.
+
+A `while` loop similar to the one you've coded in the previous exercise is already available in the editor. It prints out your current speed, but there's no code that decreases the speed variable yet, which is pretty dangerous. Can you make the appropriate changes?
+
+* If the speed is greater than 48, have R print out "Slow down big time!", and decrease the speed by 11.
+* Otherwise, have R simply print out "Slow down!", and decrease the speed by 6.
+
+```{r}
+# Initialize the speed variable
+speed <- 64
+
+# Extend/adapt the while loop
+while (speed > 30) {
+  print(paste("Your speed is",speed))
+  if (speed>48 ) {
+    print('Slow down big time!')
+    speed <- speed-11
+  } else {
+    print('Slow down!')
+    speed<-speed-6
+  }
+}
+```
+
+### Stop the while loop: break
+
+There are some very rare situations in which severe speeding is necessary: what if a hurricane is approaching and you have to get away as quickly as possible? You don't want the driver's assistant sending you speeding notifications in that scenario, right?
+
+This seems like a great opportunity to include the `break` statement in the `while` loop you've been working on. Remember that the `break` statement is a control statement. When R encounters it, the while loop is abandoned completely.
+
+Adapt the `while` loop such that it is abandoned when the speed of the vehicle is greater than `80`. This time, the speed variable has been initialized to `88`; keep it that way.
+
+```{r}
+# Initialize the speed variable
+speed <- 88
+
+while (speed > 30) {
+  print(paste("Your speed is", speed))
+  # Break the while loop when speed exceeds 80
+  if (speed > 80 ) {
+    break
+  }
+  if (speed > 48) {
+    print("Slow down big time!")
+    speed <- speed - 11
+  } else {
+    print("Slow down!")
+    speed <- speed - 6
+  }
+}
+```
+
+Feel free to play around with different values of speed to see how the `while` loop handles the different cases.
+
+### Build a while loop from scratch
+
+The previous exercises guided you through developing a pretty advanced `while` loop, containing a `break` statement and different messages and updates as determined by control flow constructs. If you manage to solve this comprehensive exercise using a `while` loop, you're totally ready for the next topic: the for loop.
+
+Finish the `while` loop so that it:
+
+* prints out the triple of `i`, so 3 * i, at each run.
+* is abandoned with a `break` if the triple of `i` is divisible by `8`, but still prints out this triple before breaking.
+
+```{r}
+# Initialize i as 1 
+i <- 1
+
+# Code the while loop
+while (i <= 10) {
+  print(3*i)
+  if ((3 * i) %% 8 == 0) {
+    print(3*i)
+    break
+  }
+  i <- i + 1
+}
+```
+
+## For loop
+
+The `for` loop is somewhat different from the while loop. Have a look at its syntax:
+
+```{}
+for (var in seq){
+  exp
+}
+```
+
+This can be read as: *for each `var`, a variable, in `seq`, a sequence, execute expressions.*
+
+Let's see how this actually works with an example. Suppose you have a vector named `cities`, containin the names of a number of cities. We can simply print the cities vector to the console using `cities`. But suppose we want to have a different printout for every element in the vector. We can accomplish this using a `for` loop.
+
+Let's change the basic syntax:
+
+* Inside the parenthesis, we write `city in cities`, meaning that we want to execute the code in the expression block for every city in the cities vector. Note that city is not a variable in the global environment, its purposes is solely based on support varible. We could use any other name, such `t`, `i`, `banana`, etc.
+* We'll simply replace the expression by a simple `print` statement for starters.
+
+```{r}
+cities <- c("New York", "Paris", "London", "Tokyo", "Rio de Janeiro", "Cape Town")
+
+for(city in cities){
+  print(city)
+}
+```
+
+How does R handle this code?
+
+1. First, at the start of the loop, R evaluates the seq element, being `cities` in our case. It then realizes its a vector containing `r length(cities)` elements;
+2. Next, R stores the first element of the sequence in the variable `city`, so city equals "New York";
+3. Then, the expression, `print(city)`, is executed, printing out "New York" to the console;
+4. After the execution, R stores the second element of the cities vector, "Paris", in `city` and re-runs the code;
+5. This process repeats itself until all cities in the `cities` vector are iterated over.
+
+The final result brings each city printed in a different line, in the sequence they are stored in `cities`.
+
+**For loop over list**
+
+The for loop does not only work on vectors: it also works with lists for example. Suppose that the cities vector is a list instead a vector. The exact same `for` loop can be used and the result will be exactly the same. So there's no need to worry about the difference between subsetting vectors and lists, because the `for` loop does this for us.
+
+```{r}
+cities <- list("New York", "Paris", "London", "Tokyo", "Rio de Janeiro", "Cape Town")
+
+for(city in cities){
+  print(city)
+}
+```
+
+**Break statement inside for loops**
+
+The `break` statement is a statement that you already know: just like in the while loop, break in a `for` loop simply stops the execution of the code and abandons the for loop altogether. Suppose we want to leave the `for` loop as soon as we encounter a city that consists of 6 characters. We can use the `nchar()` function to count the number of characters and insert an `if` statement.
+
+```{r}
+cities <- list("New York", "Paris", "London", "Tokyo", "Rio de Janeiro", "Cape Town")
+
+for(city in cities){
+  if (nchar(city) == 6) {
+    print("The city name has six characters!")
+    break
+  }
+  print(city)
+}
+```
+
+How R will deal with this code?
+
+1. For the first city in `cities` vector, "New York", the `nchar` condition is `FALSE`, so "New York" still gets printed to the console.
+2. The same happens for paris;
+3. For London, since it has exactly 6 letters, the `nchar` condition returns `TRUE` and then the loop is terminated.
+
+**Next statement**
+
+The `next` statement also alters the flow of your `for` loop, but does so in a slightly different way. 
+
+Let's see what happens if we change the `break` statement by the `next` statement and execute the entire `for` loop again.
+
+```{r}
+cities <- list("New York", "Paris", "London", "Tokyo", "Rio de Janeiro", "Cape Town")
+
+for(city in cities){
+  if (nchar(city) == 6) {
+    print("The city name has six characters!")
+    next
+  }
+  print(city)
+}
+```
+
+After printing the message "The sity name has six characters!" the code continues until the end.
+
+**for loop: v2**
+
+Before going to exercises, we will talk about another way we can loop over different data structures. Let's retake the basic `for` loop that prints the city names that are stored in a vector.
+
+```{r}
+cities <- list("New York", "Paris", "London", "Tokyo", "Rio de Janeiro", "Cape Town")
+
+for(city in cities){
+  print(city)
+}
+```
+
+Suppose that insted giving only the city's name, we also want to give information on the city's position in the vector. We can't use the construct above, given that we don't have access to the so-called *looping index*. This index is a counter that R used behind the scenes to know which element to select on every iteration. In the first iteration, the looping index is 1, and the first element of the `cities` vector is selected. But what if we want to use this looping vector ourselves? There is no way for us to access it. Fortunately, we can easily solve this. Instead itering over the cities, we can manually create a looping index ourselves. Let's start changing the looping details.
+
+1. Now, we let `i` progress from `1` to the length of the `cities` vector, which is 6, by steps of 1. Remember that `1:6` is a compact way of coding the vector `r 1:6`.
+2. By using a manual looping index, we lose our `city` variable, so we have to change the contents of the `for` loop as well. We now do the subsetting of the vector explicitly, using square brackets.
+
+```{r}
+cities <- list("New York", "Paris", "London", "Tokyo", "Rio de Janeiro", "Cape Town")
+
+for(i in 1:length(cities)){
+  print(cities[i])
+  
+}
+```
+
+The result is exactly the same as before. This might seem a bit more work, but we now gain access to the index as well. Adding some more information is easier now:
+
+```{r}
+cities <- list("New York", "Paris", "London", "Tokyo", "Rio de Janeiro", "Cape Town")
+
+for(i in 1:length(cities)){
+  print(paste(cities[i], "is on position", i, "in the cities vector."))
+}
+```
+
+But which one of the two approaches is best? _It depends_. The first one, the `cities in cities` version, is typically more concise and easier to read, but does not give access to all looping information. The version with the explicit looping index takes more thought towrite, but gives you all the information you need.
+
+### Loop over a vector
+
+To refresh your memory, consider the following loops that are equivalent in R:
+
+```{r}
+primes <- c(2, 3, 5, 7, 11, 13)
+
+# loop version 1
+for (p in primes) {
+  print(p)
+}
+
+# loop version 2
+for (i in 1:length(primes)) {
+  print(primes[i])
+}
+```
+
+Remember our `linkedin` vector? It's a vector that contains the number of views your LinkedIn profile had in the last seven days. The `linkedin` vector has already been defined so that you can fully focus on the instructions!
+
+* Write a `for` loop that iterates over all the elements of linkedin and prints out every element separately. Do this in two ways: using the `loop` version 1 and the `loop` version 2 in the example code above.
+
+```{r}
+# The linkedin vector has already been defined for you
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+
+# Loop version 1
+for(views in linkedin){
+  print(views)
+}
+
+# Loop version 2
+for (i in 1:length(linkedin)){
+  print(linkedin[i])
+}
+```
+
+### Loop over a list
+
+Looping over a list is just as easy and convenient as looping over a vector. There are again two different approaches here:
+
+```{r}
+primes_list <- list(2, 3, 5, 7, 11, 13)
+
+# loop version 1
+for (p in primes_list) {
+  print(p)
+}
+
+# loop version 2
+for (i in 1:length(primes_list)) {
+  print(primes_list[[i]])
+}
+```
+
+Notice that you need double square brackets - `[[ ]]` - to select the list elements in loop version 2.
+
+Suppose you have a list of all sorts of information on New York City: its population size, the names of the boroughs, and whether it is the capital of the United States. We've already prepared a list `nyc` with all this information in the editor (source: Wikipedia).
+
+As in the previous exercise, loop over the nyc list in two different ways to print its elements:
+
+* Loop directly over the nyc list (loop version 1).
+* Define a looping index and do subsetting using double brackets (loop version 2).
+
+```{r}
+# The nyc list is already specified
+nyc <- list(pop = 8405837, 
+            boroughs = c("Manhattan", "Bronx", "Brooklyn", "Queens", "Staten Island"), 
+            capital = FALSE)
+
+# Loop version 1
+for (information in nyc){
+  print(information)
+}
+
+# Loop version 2
+for (i in 1:length(nyc)){
+  print(nyc[[i]])
+}
+```
+
+### Loop over a matrix
+
+There's a matrix ttt, that represents the status of a tic-tac-toe game. It contains the values "X", "O" and "NA". Print out ttt in the console so you can have a closer look. On row 1 and column 1, there's "O", while on row 3 and column 2 there's "NA".
+
+To solve this exercise, you'll need a for loop inside a for loop, often called a nested loop. Doing this in R is a breeze! Simply use the following recipe:
+
+```{}
+for (var1 in seq1) {
+  for (var2 in seq2) {
+    expr
+  }
+}
+```
+
+Finish the nested for loops to go over the elements in ttt:
+
+* The outer loop should loop over the rows, with loop index `i` (use `1:nrow(ttt)`).
+* The inner loop should loop over the columns, with loop index `j` (use `1:ncol(ttt)`).
+* Inside the inner loop, make use of `print()` and `paste()` to print out information in the following format: _"On row i and column j the board contains x"_, where x is the value on that position.
+
+```{r}
+ttt <- cbind(c("O", NA, "X"), c(NA, "O", "O"), c("X", NA, "X"))
+
+# The tic-tac-toe matrix ttt has already been defined for you
+ttt
+
+# define the double for loop
+for (i in 1:nrow(ttt)) {
+  for (j in 1:ncol(ttt)) {
+    print(paste("On row ", i," and column ", j," the board contains ", ttt[i,j], "."))
+  }
+}
+```
+
+### Mix it up with control flow
+
+Let's return to the LinkedIn profile `views` data, stored in a vector `linkedin`. In the first exercise on `for` loops you already did a simple printout of each element in this vector. A little more in-depth interpretation of this data wouldn't hurt, right? Time to throw in some conditionals! As with the `while` loop, you can use the `if` and `else` statements inside the `for` loop.
+
+Add code to the for loop that loops over the elements of the linkedin vector:
+
+* If the vector element's value exceeds `10`, print out _"You're popular!"_.
+* If the vector element's value does not exceed `10`, print out _"Be more visible!"_
+
+```{r}
+# The linkedin vector has already been defined for you
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+
+# Code the for loop with conditionals
+for (li in linkedin) {
+  if (li > 10) {
+    print("You're so popular!")
+  } else {
+    print("Be more visible!")
+  }
+  print(li)
+}
+```
+
+### Next, you break it
+
+In the editor on the right you'll find a possible solution to the previous exercise. The code loops over the `linkedin` vector and prints out different messages depending on the values of `li`.
+
+In this exercise, you will use the `break` and `next` statements:
+
+The `break` statement abandons the active loop: the remaining code in the loop is skipped and the loop is not iterated over anymore.
+The `next` statement skips the remainder of the code in the loop, but continues the iteration.
+
+Extend the `for` loop with two new, separate `if` tests in the editor as follows:
+
+* If the vector element's value exceeds `16`, print out _"This is ridiculous, I'm outta here!"_ and have R abandon the for loop (break).
+* If the value is lower than `5`, print out _"This is too embarrassing!"_ and fast-forward to the next iteration (`next`).
+
+```{r}
+# The linkedin vector has already been defined for you
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+
+# Extend the for loop
+for (li in linkedin) {
+  if (li > 10) {
+    print("You're popular!")
+  } else {
+    print("Be more visible!")
+  }
+
+  # Add if statement with break
+  if (li > 16) {
+    print("This is ridiculous, I'm outta here!")
+    break
+  }
+  
+  # Add if statement with next
+    if (li < 5) {
+    print("This is too embarrassing!" )
+    next
+  }
+  
+  print(li)
+}
+```
+
+### Build a for loop from scratch
+
+This exercise will not introduce any new concepts on `for` loops.
+
+In the chunk, we already went ahead and defined a variable `rquote`. This variable has been split up into a vector that contains separate letters and has been stored in a vector chars with the `strsplit()` function.
+
+Can you write code that counts the number of r's that come before the first u in rquote?
+
+* Initialize the variable `rcount`, as 0.
+* Finish the `for` loop:
+    * if char equals "r", increase the value of `rcount` by 1.
+    * if char equals "u", leave the `for` loop entirely with a `break`.
+* Finally, print out the variable `rcount` to the console to see if your code is correct.
+
+```{r}
+# Pre-defined variables
+rquote <- "r's internals are irrefutably intriguing"
+chars <- strsplit(rquote, split = "")[[1]]
+
+# Initialize rcount
+rcount <- 0
+
+# Finish the for loop
+for (char in chars) {
+  if(char == "r"){
+    rcount <- rcount + 1
+  } 
+  if(char == "u"){
+    break
+  }
+}
+
+# Print out rcount
+rcount
+```

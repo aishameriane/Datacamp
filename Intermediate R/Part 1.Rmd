@@ -1,0 +1,711 @@
+---
+title: "Part 1"
+author: "Aishameriane Schmidt"
+date: "8 de maio de 2017"
+output: html_document
+---
+
+# Part 1 - Conditionals and Control Flow
+
+## Relational Operators
+
+Relational operators or comparators are operators that help us see how one R object relates to another. For example, you can check whethe two objects are equal using the double equal sign `==`. You can, for example, see, if the logical value `TRUE` is equal to the logical value `TRUE`.
+
+```{r}
+TRUE == TRUE
+TRUE == 1
+TRUE == FALSE
+TRUE == 0
+```
+
+Apart from logical values, you can also check the equality of other types. You can also compare strings,
+
+```{r}
+"hello" = "goodbye"
+```
+
+and numbers
+
+```{r}
+3 == 6/2
+3 == 5
+```
+
+The oposite of the equality operator are the inequality operator, written as one exclamation mark followed by an equal sign.
+
+```{r}
+"hello" != "goodbye"
+```
+
+The inequality operator can also be used for numbers, logical values and other R objects as well.
+
+Of course that are also cases where you need more than just equality or inequality operators, like greater than, less than, greater of equal to, less or equal to... For the first ones, you can use `>` for greater and `<` for less. For example:
+
+```{r}
+3 < 5
+
+3 > 5
+```
+
+For numerics, this makes sense, but how this will work for character strings and logical values? Is "hello" greater than "goodbye"? Let's find out:
+
+```{r}
+"Hello" > "Goodbye"
+```
+
+Aparently, Hello is grater than Goodbye. This happens because R uses alfabetical order to locate letters. Since "H" comes after "G" in the alphabet, R considers "Hello" to be greater than "Goodbye".
+
+But how about logical values? Is `TRUE` less than `FALSE`?
+
+```{r}
+TRUE < FALSE
+```
+
+It appears not, because R evaluates like `FALSE`. That's because `TRUE` corresponds to $1$ and `FALSE` corresponds to $0$.
+
+But what happens when we try to extend this to vectors?
+
+Suppose you have recorded the daily number of views your Likedin profile had the previous week and you are interested in finding out which days you received more than 10 views. You can directly use the `> 10` sign:
+
+```{r}
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+linkedin
+
+linkedin > 10
+```
+
+The 2nd, 4th and 5th returned false, indicating that you had less than 10 views in these days. 
+
+Suppose now you have the number of views in your Facebook profile the previous week and you want to compare them:
+
+```{r}
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+facebook <- c(17, 7, 5, 16, 8, 13, 14)
+
+facebook <= linkedin
+```
+
+In this case the comparison is done for every element of the vector, one by one (note that they must have the same size). For example, in the third day, the number of facebook views is five and the number of linkedin views is thirteen, so the formula returns `TRUE`, because facebook is less or equal to linkedin. 
+
+### Equality
+
+Let's recap: all the following statements return `TRUE`:
+
+```{r}
+3 == (2 + 1)
+"intermediate" != "r"
+TRUE != FALSE
+"Rchitect" != "rchitect"
+```
+
+Notice the last one: because R is case sensitive, "R" is not equal to "r".
+
+Task: 
+* In the editor on the right, write R code to see if TRUE equals FALSE.
+* Likewise, check if -6 * 14 is not equal to 17 - 101.
+* Next up: comparison of character strings. Ask R whether the strings "useR" and "user" are equal.
+* Finally, find out what happens if you compare logicals to numerics: are TRUE and 1 equal?
+
+```{r}
+# Comparison of logicals
+TRUE == FALSE
+
+# Comparison of numerics
+-6 * 14 != 17-101
+
+# Comparison of character strings
+"useR" == "user"
+
+# Compare a logical with a numeric
+TRUE == 1
+```
+
+Awesome! 
+Since `TRUE` coerces to $1$ under the hood, `TRUE == 1` evaluates to TRUE. Make sure not to mix up `==` (*comparison*) and `=` (assignment), `==` is what need to check the equality of R objects.
+
+### Greater and less than
+
+Apart from equality operators, Filip also introduced the less than and greater than operators: < and >. You can also add an equal sign to express less than or equal to or greater than or equal to, respectively. Have a look at the following R expressions, that all evaluate to FALSE:
+
+
+```{r}
+(1 + 2) > 4
+"dog" < "Cats"
+TRUE <= FALSE
+```
+
+Remember that for string comparison, R determines the greater than relationship based on alphabetical order. Also, keep in mind that `TRUE` corresponds to $1$ in R, and `FALSE` coerces to $0$ behind the scenes. Therefore, `FALSE < TRUE` is `TRUE`.
+
+Write R expressions to check whether:
+
+* -6 * 5 + 2 is greater than or equal to -10 + 1.
+* "raining" is less than or equal to "raining dogs".
+* TRUE is greater than FALSE.
+
+```{r}
+# Comparison of numerics
+-6*5+2 >= -10+1
+
+# Comparison of character strings
+"raining" <= "raining dogs"
+
+# Comparison of logicals
+TRUE > FALSE
+```
+
+### Compare Vectors
+
+Let's go back to the example that was started earlier. You want to figure out whether your activity on social media platforms have paid off and decide to look at your results for LinkedIn and Facebook. Each of the vector contains the number of profile views your LinkedIn and Facebook profiles had over the last seven days.
+
+```{r}
+# The linkedin and facebook vectors have already been created for you
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+facebook <- c(17, 7, 5, 16, 8, 13, 14)
+
+# Popular days
+linkedin > 15
+
+# Quiet days
+linkedin <= 5
+
+# LinkedIn more popular than Facebook
+linkedin > facebook
+```
+
+
+### Compare Matrices
+
+R's ability to deal with different data structures for comparisons does not stop at vectors. Matrices and relational operators also work together seamlessly!
+
+Instead of in vectors (as in the previous exercise), the LinkedIn and Facebook data is now stored in a matrix called views. The first row contains the LinkedIn information; the second row the Facebook information. The original vectors facebook and linkedin are still available as well.
+
+Using the relational operators you've learned so far, try to discover the following:
+
+* When were the views exactly equal to 13? Use the `views` matrix to return a logical matrix.
+* For which days was the number of views less than or equal to 14? Again, have R return a logical matrix.
+
+```{r}
+# The social data has been created for you
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+facebook <- c(17, 7, 5, 16, 8, 13, 14)
+views <- matrix(c(linkedin, facebook), nrow = 2, byrow = TRUE)
+
+# When does views equal 13?
+views == 13
+
+# When is views less than or equal to 14?
+views <= 15
+```
+
+##  Logical Operators
+
+Now that you know how to use relational operators in R, let's learn how to change or combine results in comparisons. R does that using three logical operators:
+
+* `AND` operator `&`;
+* `OR` operator `|`;
+* `NOT` operator `!`.
+
+Let's look at each of them, starting with the `AND` operator.
+
+The `&` operator works just as you expected, it takes two logical values and returns `TRUE` only if both values are at the same time `TRUE` themselves. This means that `TRUE & TRUE` evaluates `TRUE` and all other three possibilities between `TRUE` and `FALSE` return `FALSE`:
+
+```{r}
+# Returns true
+TRUE & TRUE
+
+# Return false
+TRUE & FALSE
+
+FALSE & TRUE
+
+FALSE & FALSE
+```
+
+Instead using logical values we can of course use the results of comparisons. See the example below:
+
+```{r}
+x <- 12
+
+# Verifica se x está entre 5 e 15
+
+x > 5 & x < 15
+```
+
+Because both parts evaluates to `TRUE`, the statement is equal `TRUE`. However, if we change the value of x to $17$, we are going to have `x > 5` equals `TRUE` but it is not true that, in this case, `x < 15`, so the whole expression equals to `FALSE`.
+
+The `OR` operator works similarly, but only one expression needs to be true in order to make the whole expression true. Recovering our first example:
+
+```{r}
+# Returns true
+TRUE | TRUE
+
+TRUE | FALSE
+
+FALSE | TRUE
+
+# Return false
+FALSE & FALSE
+```
+
+Just as we have done with the and operator, we can use or operator to evaluate two comparisons:
+
+```{r}
+y <- 4
+
+# Evaluate if y is less than 5 or greater than 15
+y < 5 | y > 15
+```
+
+Note that because the first comparison is true, the whole block is true.
+
+We can change the y value to $14$:
+
+```{r}
+y <- 14
+
+# Evaluate if y is less than 5 or greater than 15
+y < 5 | y > 15
+```
+
+Now, because none expression is true, the statement is false.
+
+The last operator is called `NOT` operator and is represented by the exclamation mark in R. It simply negates the logical value of an expression . For example:
+
+```{r}
+!TRUE
+
+!FALSE
+```
+
+Just as the `AND` and `OR` operators, you can use the `NOT` operator combined with another operators.
+
+```{r}
+# Both lines of code are the same
+x <- 5
+!(x<5)
+
+x >= 5
+```
+
+There are cases where the `NOT` operator is really handy, for example, `is.numeric(5)` returns `TRUE` because indeed 5 is a numeric. Negating this result using the ! operator, we get a `FALSE`.
+
+```{r}
+is.numeric(5)
+
+!is.numeric(5)
+```
+
+If, however, we type
+
+```{r}
+is.numeric("hello")
+```
+
+We got a `FALSE` and negating this result gives us `TRUE`.
+
+Now, how the logical operators relates to vectors and matrices? Well, they perform the evaluations element by element.
+
+```{r}
+c(TRUE, TRUE, FALSE) & c(TRUE, FALSE, FALSE)
+
+c(TRUE, TRUE, FALSE) | c(TRUE, FALSE, FALSE)
+
+!c(TRUE, TRUE, FALSE)
+```
+
+*Observation* There are differences between `&` and `&&` and also between `|` and `||`. In R you can use both, but you can achieve different results with them.
+
+```{r}
+# Returns TRUE FALSE FALSE
+c(TRUE, TRUE, FALSE) & c(TRUE, FALSE, FALSE)
+
+# Returns TRUE
+c(TRUE, TRUE, FALSE) && c(TRUE, FALSE, FALSE)
+
+```
+
+The doubled operator only evaluates the first element of each vector. In this case the first elements are `TRUE` and `TRUE`, so it returns `TRUE`.
+
+### & and |
+
+Before you work your way through the next exercises, have a look at the following R expressions. All of them will evaluate to TRUE:
+
+```{r}
+TRUE & TRUE
+FALSE | TRUE
+5 <= 5 & 2 < 3
+3 < 4 | 7 < 6
+```
+
+*Watch out*: `3 < x < 7` to check if `x` is between $3$ and $7$ will not work; you'll need `3 < x & x < 7` for that.
+
+In this exercise, you'll be working with the last variable. This variable equals the last value of the linkedin vector that you've worked with previously. The linkedin vector represents the number of LinkedIn views your profile had in the last seven days, remember? Both the variables linkedin and last have already been defined in the editor.
+
+Write R expressions to solve the following questions concerning the variable last:
+
+* Is last under 5 or above 10?
+* Is last between 15 and 20, excluding 15 but including 20?
+
+```{r}
+# The linkedin and last variable are already defined for you
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+last <- tail(linkedin, 1)
+
+# Is last under 5 or above 10?
+last < 5 | last > 10
+
+# Is last between 15 (exclusive) and 20 (inclusive)?
+last > 15 & last <= 20
+```
+
+### & and | (2)
+
+Like relational operators, logical operators work perfectly fine with vectors and matrices.
+
+Both the vectors linkedin and facebook are available again. Also a matrix - views - has been defined; its first and second row correspond to the linkedin and facebook vectors, respectively. Ready for some advanced queries to gain more insights into your social outreach?
+
+* When did LinkedIn views exceed 10 _and_ did Facebook views fail to reach 10 for a particular day? Use the `linkedin` and `facebook` vectors.
+* When were one or both of your LinkedIn and Facebook profiles visited at least 12 times?
+* When is the `views` matrix equal to a number between 11 and 14, excluding 11 and including 14?
+
+```{r}
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+facebook <- c(17, 7, 5, 16, 8, 13, 14)
+views <- matrix(c(linkedin, facebook), nrow = 2, byrow = TRUE)
+
+# linkedin exceeds 10 but facebook below 10
+linkedin > 10 & facebook < 10
+
+# When were one or both visited at least 12 times?
+linkedin >= 12 | facebook >= 12
+
+# When is views between 11 (exclusive) and 14 (inclusive)?
+views > 11 & views <= 14
+```
+
+###  Reverse the result: !
+On top of the `&` and `|` operator, you also learned about the `!` operator, which negates a logical value. To refresh your memory, here are some R expressions that use `!`. They all evaluate to FALSE:
+
+* `!TRUE`
+* `!(5 > 3)`
+* `!!FALSE`
+
+What would the following set of R expressions return?
+
+```{r}
+x <- 5
+y <- 7
+!(!(x < 4) & !!!(y > 12))
+```
+
+### Blend it all together
+
+With the things you've learned by now, you're able to solve pretty cool problems.
+
+Instead of recording the number of views for your own LinkedIn profile, suppose you conducted a survey inside the company you're working for. You've asked every employee with a LinkedIn profile how many visits their profile has had over the past seven days. You stored the results in a data frame called `li_df`. This data frame is available in the workspace; type `li_df` in the console to check it out.
+
+* Select the entire second column, named `day2`, from the `li_df` data frame as a vector and assign it to `second`.
+* Use second to create a logical vector, that contains `TRUE` if the corresponding number of views is strictly greater than 25 or strictly lower than 5 and FALSE otherwise. Store this logical vector as extremes.
+* Use sum() on the extremes vector to calculate the number of TRUEs in extremes (i.e. to calculate the number of employees that are either very popular or very low-profile). Simply print this number to the console.
+
+```{r}
+# li_df is pre-loaded in your workspace
+li_df<- read.csv("C:\\Users\\Aishameriane\\OneDrive\\Documentos\\Cursos online\\DataCamp\\Intermediate R\\asdf.txt", sep=",")
+head(li_df)
+
+# Select the second column, named day2, from li_df: second
+second <- li_df[,2]
+
+# Build a logical vector, TRUE if value in second is extreme: extremes
+extremes <- second > 25 | second < 5
+
+# Count the number of TRUEs in extremes
+sum(extremes)
+
+# Solve it with a one-liner
+sum(li_df[,2] > 25 | li_df[,2] < 5)
+```
+
+## Conditional Statements
+
+We have already seen relational operators, which tell us how R objects relates and logical operators, that allow us to combine logical values. Now we are going to study conditionals, that allow us to change the way our code behave. 
+
+Let's start with the `if` statemente. Its structure is bellow:
+
+```{}
+if(condition) {
+  expr
+}
+```
+
+The code verifies if the condition is equal `TRUE` and then evaluates de block of code. Otherwise, it will skyp everything between the curly brackets. Let's look at an example. Suppose you have an `x` value and if `x` is less than zero, you want to print `x is negative`.
+
+```{r}
+x <- -3
+
+if (x < 0){
+  print("x is negative.")
+}
+```
+
+But if we change the `x` value to $5$, R will skip the code:
+
+```{r}
+x <- 5
+
+if (x < 0){
+  print("x is negative.")
+}
+```
+
+This brings us to the `else` statement. This operator does not need an explicit condition, instead, it has to be used with an `if` statement and the `else` part will be used if the condition inside the `if` parenthesis returns `FALSE`. The structure is:
+
+```{}
+if(condition) {
+  expr1
+} else {
+  expr2
+}
+```
+
+Let's change a little our example and add an `else` to print `x is positive or zero` whenever this happens.
+
+```{r}
+x <- 5
+
+if (x < 0){
+  print("x is negative.")
+} else {
+  print("x is either a positive number or zero.")
+}
+```
+
+This happened because $x=5$ thus the condition `x<0` returned false. If we have $x=-3$, the code will execute as follows:
+
+```{r}
+x <- -3
+
+if (x < 0){
+  print("x is negative.")
+} else {
+  print("x is either a positive number or zero.")
+}
+```
+
+But if you want to print something different when $x=0$, we need to have another tool. R also provides the `else if` statements, as bellow:
+
+```{}
+if(condition1) {
+  expr1
+} else if (condition2){
+  expr2
+} else {
+  expr3
+}
+```
+
+So we can adapt our example to:
+
+```{r}
+x <- c(-3, 2, 0)
+
+for (i in 1:length(x)) {
+  if (x[i] < 0){
+    message(sprintf("%s is negative.", x[i]))
+  } else if (x[i] == 0){
+    message(sprintf("%s is equal to zero.", x[i]))
+  } else {
+    message(sprintf("%s is a positive number.", x[i]))
+  }
+}
+```
+
+Pay attention that R finds the first condition that is `TRUE` and ignore the others following, so the conditionals must not overlap. Another example: suppose we want to evaluate if a number is divisible by 2 or 3. 
+
+```{r}
+x <- c(4, 5, 6)
+
+for (i in 1:length(x)) {
+  if (x[i] %% 2 == 0) {
+   message(sprintf("%s is divisible by 2", x[i]))
+  } else if (x[i] %% 3 == 0) {
+   message(sprintf("%s is divisible by 3", x[i]))
+  } else {
+   message(sprintf("%s is not divisible by 2 nor by 3", x[i]))
+  }
+}
+```
+
+See what happened? Since $6$ is multiple of both $2$ and $3$, it returns `TRUE` for the first conditional and ignores the second one. 
+### The if statement
+
+Remember your vectors with social profile views?  Let's look at it from another angle.
+
+The `medium` variable gives information about the social website; the `num_views` variable denotes the actual number of views that that particular `medium` had on the last day of your recordings.
+
+* Examine the `if` statement that prints out "Showing LinkedIn information" if the `medium` variable equals "LinkedIn".
+* Code an `if` statement that prints "You're popular!" to the console if the `num_views` variable exceeds 15.
+
+```{r}
+# Variables related to your last day of recordings
+medium <- "LinkedIn"
+num_views <- 14
+
+# Examine the if statement for medium
+if (medium == "LinkedIn") {
+  print("Showing LinkedIn information")
+}
+
+# Write the if statement for num_views
+if (num_views > 15) {
+  print("You are popular!")
+}
+
+# What happens when we change num_views by medium?
+if (medium > 15) {
+  print("You are popular!")
+}
+```
+
+### Add an else
+
+You can only use an `else` statement in combination with an `if` statement. The else statement does not require a condition; its corresponding code is simply run if all of the preceding conditions in the control structure are `FALSE`. 
+
+Here's a recipe for its usage:
+
+```{}
+if(condition) {
+  expr1
+} else {
+  expr2
+}
+```
+
+_It's important that the `else` keyword comes on the same line as the closing bracket of the `if` part!_
+
+Add an `else` statement to both control structures, such that
+
+* "Unknown medium" gets printed out to the console when the if-condition on `medium` does not hold.
+* R prints out "Try to be more visible!" when the if-condition on `num_views` is not met.
+
+```{r}
+# Variables related to your last day of recordings
+medium <- "Facebook"
+num_views <- 14
+
+# Examine the if statement for medium
+if (medium == "LinkedIn") {
+  print("Showing LinkedIn information")
+} else {
+  print("Unknown medium.")
+}
+
+# Write the if statement for num_views
+if (num_views > 15) {
+  print("You are popular!")
+} else {
+  print("Try to be more visible!")
+}
+```
+
+
+###  Customize further: else if
+
+The `else if` statement allows you to further customize your control structure. You can add as many `else if` statements as you like. 
+Keep in mind that R ignores the remainder of the control structure once a condition has been found that is `TRUE` and the corresponding expressions have been executed. 
+
+_Again, It's important that the `else if` keywords comes on the same line as the closing bracket of the previous part of the control construct!_
+
+Add code to both control structures such that:
+
+* R prints out "Showing Facebook information" if medium is equal to "Facebook". Remember that R is case sensitive!
+* "Your number of views is average" is printed if num_views is between 15 (inclusive) and 10 (exclusive). Feel free to change the variables medium and num_views to see how the control structure respond. In both cases, the existing code should be extended in the else if statement. No existing code should be modified.
+
+```{r}
+# Variables related to your last day of recordings
+medium <- "LinkedIn"
+num_views <- 14
+
+# Control structure for medium
+if (medium == "LinkedIn") {
+  print("Showing LinkedIn information")
+} else if (medium == "Facebook") {
+  # Add code to print correct string when condition is TRUE
+  print("Showing Facebook information")
+} else {
+  print("Unknown medium")
+}
+
+# Control structure for num_views
+if (num_views > 15) {
+  print("You're popular!")
+} else if (num_views <= 15 & num_views > 10) {
+  # Add code to print correct string when condition is TRUE
+  print("Your number of views is average")
+} else {
+  print("Try to be more visible!")
+}
+```
+
+Have another look at the second control structure. Because R abandons the control flow as soon as it finds a condition that is met, you can simplify the condition for the `else if` part in the second construct to `num_views > 10`.
+
+### Else if 2.0
+
+You can do anything you want inside if-else constructs. You can even put in another set of conditional statements. Examine the following code chunk:
+
+```{}
+if (number < 10) {
+  if (number < 5) {
+    result <- "extra small"
+  } else {
+    result <- "small"
+  }
+} else if (number < 100) {
+  result <- "medium"
+} else {
+  result <- "large"
+}https://campus.datacamp.com/courses/intermediate-r/chapter-2-loops?ex=1
+print(result)
+```
+
+Have a look at the following statements:
+
+1. If number is set to 6, "small" gets printed to the console.
+2. If number is set to 100, R prints out "medium".
+3. If number is set to 4, "extra small" gets printed out to the console.
+4. If number is set to 2500, R will generate an error, as result will not be defined.
+
+Which statements are true accordingly to the code?
+
+###  Take control
+
+In this exercise, you will combine everything that you've learned so far: relational operators, logical operators and control constructs. You'll need it all!
+
+In the editor, we've coded two values beforehand: `li` and `fb`, denoting the number of profile views your LinkedIn and Facebook profile had on the last day of recordings. Go through the instructions to create R code that generates a 'social media score', `sms`, based on the values of `li` and `fb`.
+
+Finish the control-flow construct with the following behavior:
+
+* If both `li` and `fb` are 15 or higher, set sms equal to double the sum of `li` and `fb`.
+* If both `li` and `fb` are strictly below $10$, set sms equal to half the sum of `li` and `fb`.
+* In all other cases, set `sms` equal to `li` + `fb`.
+* Finally, print the resulting sms variable to the console.
+
+```{r}
+# Variables related to your last day of recordings
+li <- 15
+fb <- 9
+
+# Code the control-flow construct
+if (li > 15 & fb > 15) {
+  sms <- 2 * (li + fb)
+} else if (li < 10 & fb < 10) {
+  sms <- 0.5 * (li + fb)
+} else {
+  sms <- li + fb
+}
+
+# Print the resulting sms to the console
+sms
+```
+
+
