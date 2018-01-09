@@ -7,49 +7,728 @@ output: html_document
 
 # Part 3 - Functions
 
+## Introduction to Functions
+
 You can think of a function as some type of black-box: you give an input, the black-box processes it and give you an output. For example, consider the `sd()` function, that calculates the standard deviation. If you give to this function a vector containing the values $(1, 5, 6, 7)$, it will return the value `r round(sd(c(1, 5, 6, 7)),4)`. The comand is `sd(c(1, 5, 6, 7))` where the function is `sd()` and it takes `c(1, 5, 6, 7)` as arguments. In this case you have a single argument, a vector containing 4 values. You can also storage your vector into a value `dados` and then ask R to evaluate `sd(dados)`. Also, if you want to reuse the function results in other pieces of your code, you can save the value to another variable, like `desvio <- sd(dados)`.
 
 We are dealing with a simple function, `sd()`, that takes a single argument. Since R has many functions, it is usefull read their documentations before using the `help()` funcion. For example, `help(sd)` or `?sd` exibits the same result. You can see in this help that `sd()` function actually takes two arguments, one of them is `na.rm=FALSE`. This means that you can set the option for removing the `NA`'s, using `na.rm=TRUE` or, if you don't want to remove them, you can specify `na.rm = FALSE`. Since this last option is already the default, you don't need to specify it (although no error message is shown if you do). R knows that `dados` is the argument to put in its `x` because it considers order.
 
-Let's save the values `1,5,6,NA` in a vector: `r values <- c(1,5,6,NA)`. Now, we try to call `sd(values)` to see what happens: `r sd(values)`. The result is equal to `r NA` because the default argument for the function `sd()` is `na.rm = FALSE`, meaning it doesn't remove the `r NA` by default. In order to ignore the missing value, we should write `sd(values, na.rm = TRUE)` and obtain `r sd(values, na.rm = TRUE)`. Since R assigns arguments by order, we can use `sd(values, TRUE)` or use the matching by name, `sd(na.rm = TRUE, x = values)`.
+Let's save the values `1,5,6,NA` in a vector: `values <- c(1,5,6,NA)`. Now, we try to call `sd(values)` to see what happens: `NA`. The result is equal to `NA` because the default argument for the function `sd()` is `na.rm = FALSE`, meaning it doesn't remove the `r NA` by default. In order to ignore the missing value, we should write `sd(c(1,5,6,NA), na.rm = TRUE)` and obtain `r sd(c(1,5,6,NA), na.rm = TRUE)`. Since R assigns arguments by order, we can use `sd(c(1,5,6,NA), TRUE)` or use the matching by name, `sd(na.rm = TRUE, x = c(1,5,6,NA))`.
 
-A useful function is `args()`. It returns the arguments of a function. For example, `args(sd)` returns `r args(sd)`.
-
-## Introduction to Functions
-
-
+A useful function is `args()`. It returns the arguments of a function. For example, `args(sd)` returns `function (x, na.rm = FALSE)`.
 
 ###  Function documentation
 
+Before even thinking of using an R function, you should clarify which arguments it expects. All the relevant details such as a description, usage, and arguments can be found in the documentation. To consult the documentation on the `sample()` function, for example, you can use one of following R commands:
+
+```{r}
+help(sample)
+?sample
+```
+
+A quick hack to see the arguments of the `sample()` function is the `args()` function.
+
+```{r}
+args(sample)
+```
+
+In the next exercises, you'll be learning how to use the `mean()` function with increasing complexity. The first thing you'll have to do is get acquainted with the `mean()` function.
+
+* Consult the documentation on the `mean()` function: `?mean` or `help(mean)`.
+* Inspect the arguments of the `mean()` function using the `args()` function.
+
+```{r}
+# Consult the documentation on the mean() function
+help(mean)
+
+# Inspect the arguments of the mean() function
+args(mean)
+```
+
 ###  Use a function
+
+The documentation on the mean() function gives us quite some information:
+
+* The `mean()` function computes the arithmetic mean.
+* The most general method takes multiple arguments: `x` and `...` .
+* The `x` argument should be a vector containing numeric, logical or time-related information.
+
+Remember that R can match arguments both by position and by name. Can you still remember the difference? You'll find out in this exercise!
+
+Once more, you'll be working with the view counts of your social network profiles for the past 7 days. These are stored in the `linkedin` and `facebook` vectors.
+
+* Calculate the average number of views for both `linkedin` and `facebook` and assign the result to `avg_li` and `avg_fb`, respectively.
+* Experiment with different types of argument matching!
+* Print out both `avg_li` and `avg_fb`.
+
+```{r}
+# The linkedin and facebook vectors have already been created for you
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+facebook <- c(17, 7, 5, 16, 8, 13, 14)
+
+# Calculate average number of views
+avg_li <- mean(x = linkedin)
+avg_fb <- mean(facebook)
+
+# Inspect avg_li and avg_fb
+avg_li
+avg_fb
+```
 
 ###  Use a function (2)
 
+Check the documentation on the `mean()` function again:
+
+```{r}
+?mean
+```
+
+The Usage section of the documentation includes two versions of the `mean()` function. The first usage,
+
+```{}
+mean(x, ...)
+```
+
+is the most general usage of the mean function. The 'Default S3 method', however, is:
+
+```{}
+mean(x, trim = 0, na.rm = FALSE, ...)
+```
+
+The `...` is called the ellipsis. It is a way for R to pass arguments along without the function having to name them explicitly. The ellipsis will be treated in more detail in future courses.
+
+For the remainder of this exercise, just work with the second usage of the `mean` function. Notice that both `trim` and `na.rm` have default values. This makes them **optional arguments**.
+
+* Calculate the mean of the element-wise sum of `linkedin` and `facebook` and store the result in a variable `avg_sum`.
+* Calculate the mean once more, but this time set the `trim` argument equal to `0.2` and assign the result to `avg_sum_trimmed`.
+* Print out both `avg_sum` and `avg_sum_trimmed`; can you spot the difference?
+
+```{r}
+# The linkedin and facebook vectors have already been created for you
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+facebook <- c(17, 7, 5, 16, 8, 13, 14)
+
+# Calculate the mean of the sum
+avg_sum <- mean(x = linkedin+facebook)
+
+# Calculate the trimmed mean of the sum
+avg_sum_trimmed <- mean(linkedin+facebook,trim=0.2)
+
+# Inspect both new variables
+avg_sum
+avg_sum_trimmed
+```
+
+When the trim argument is not zero, it chops off a fraction (equal to `trim`) of the vector you pass as argument `x`.
+
 ###  Use a function (3)
+
+The `sd()` function has an optional argument, `na.rm` that specified whether or not to remove missing values from the input vector before calculating the standard deviation.
+
+If you've had a good look at the documentation, you'll know by now that the `mean()` function also has this argument, `na.rm`, and it does the exact same thing. By default, it is set to `FALSE`, as the Usage of the default S3 method shows:
+
+```{}
+mean(x, trim = 0, na.rm = FALSE, ...)
+```
+
+Let's see what happens if your vectors `linkedin` and `facebook` contain missing values (`NA`).
+
+* Calculate the average number of LinkedIn profile views, without specifying any optional arguments. Simply print the result to the console.
+* Calculate the average number of LinkedIn profile views, but this time tell R to strip missing values from the input vector.
+
+
+```{r}
+# The linkedin and facebook vectors have already been created for you
+linkedin <- c(16, 9, 13, 5, NA, 17, 14)
+facebook <- c(17, NA, 5, 16, 8, 13, 14)
+
+# Basic average of linkedin
+mean(linkedin)
+
+# Advanced average of linkedin
+mean(linkedin,na.rm = TRUE)
+```
 
 ###  Functions inside functions
 
+You already know that R functions return objects that you can then use somewhere else. This makes it easy to use functions inside functions, as you've seen before:
+
+```{r}
+speed <- 31
+print(paste("Your speed is", speed))
+```
+
+Notice that both the `print()` and `paste()` functions use the ellipsis - `...` - as an argument. Can you figure out how they're used?
+
+Use `abs()` on `linkedin - facebook` to get the absolute differences between the daily Linkedin and Facebook profile views. Next, use this function call inside `mean()` to calculate the Mean Absolute Deviation. In the `mean()` call, make sure to specify `na.rm` to treat missing values correctly!
+
+```{r}
+# The linkedin and facebook vectors have already been created
+linkedin <- c(16, 9, 13, 5, NA, 17, 14)
+facebook <- c(17, NA, 5, 16, 8, 13, 14)
+
+# Calculate the mean absolute deviation
+abs(linkedin - facebook)
+mean(abs(linkedin - facebook), na.rm = TRUE)
+```
+
 ###  Required or optional?
+
+By now, you will probably have a good understanding of the difference between required and optional arguments. Let's refresh this difference by having one last look at the `mean()` function:
+
+```{}
+mean(x, trim = 0, na.rm = FALSE, ...)
+```
+
+`x` is required; if you do not specify it, R will throw an error. `trim` and `na.rm` are optional arguments: they have a default value which is used if the arguments are not explicitly specified.
+
+Which of the following statements about the `read.table()` function are true?
+
+1. `header`, `sep` and `quote` are all optional arguments.
+2. `row.names` and `fileEncoding` don't have default values.
+3. `read.table("myfile.txt", "-", TRUE)` will throw an error.
+4. `read.table("myfile.txt", sep = "-", header = TRUE)` will throw an error.
+
+Answer: (1) and (3).
+
+```{r}
+args(read.table)
+```
 
 ## Writing functions
 
+You know different ways to use R functions, but this is not the end. You can also write *your* own R functions. But why someone would want to do this? This is most a question of experience, but there are some guidelines.
+
+A function typically solves a particular need or solves a well-defined problem, without having to care about how the function does this. They follow the black-box principle: an imput is given and an output is produced. If you are writing your own functions, you are inventing your own black box that takes inputs and generates an output. How the black box goes about solving its task is not important once you've written the function. You want to be able to use this function just as if it was a standard R function, such as `mean()`, `sd()`, or `list()` - you don't know how these work under the hood either, do you?
+
+Writing your own functions is super simple as soon as you know the syntax. 
+
+Let's define a function that calculates the triple of its input, called triple. In a black-box manner, it would look like this: a numeric goes in, the `triple()` function does its magic and the triple of the numeric comes out.
+
+![triplet](img/Imagem001.png)
+
+But how dows this look in an R code? You use the function construct for this:
+
+```{}
+my_fun <- function(arg1, arg2) {
+  body
+}
+```
+
+This function recipe reads itself as: create a new function, `my_fun()`, that takes `arg1` and `arg2` as arguments, and performs the code in the body on these arguments, eventually generating an output. In our case, we want our function to be called triple, that takes a single input, a number. We replace the `arg1` and `arg2` part by a single argument, named `x`. 
+
+Now, what do we want our body, the core of the function, to be? We want to calculate the triple of `x`, so we simply put `3*x`. 
+
+```{r}
+triple <- function(x) {
+  x * 3
+}
+```
+
+If we execute this function definition, a new object gets defined in our workspace, `triple` (if you are using RStudio, just check the right panel) or type `ls()` in the console.
+
+Now, let's go ahead and calculate the triple of $6$. Just like we did before with R's built-in functions, we use standard parentheses. If we call `triple(6)`, R figures out that the `x` argument corresponds to the value $6$. Next, the function's body is executed, calculating $3$ times $6$, whose result is $18$. How does R know that it needs to return this value? That's because the last expression evaluated in an R function becomes the return value (note: if your function needs to return several values, you will need to specify manually).  
+
+```{r}
+triple(6)
+```
+
+You can also explicitly specify the return value, by using the `return` statement. Let's change the function body to use an intermediary value `y`. Inside the function, we assign to `y`the triple of `x`and next, we return this value `y`.
+
+```{r}
+triple <- function(x) {
+  y <- x * 3
+  return(y)
+}
+
+triple(6)
+```
+
+If we source (execute the function definition to save in the workspace) and call the `triple` function on the number $6$, we get the exact same result as before, $18$. Using a return statement at the end of your function body is not always useful (like in the example above), but there are cases where the `return` statement will come in handy (usually for more complex functions or functions that return multiple values). 
+
+**The `math_magic()` function**
+
+Let's try something different now. Suppose we want to write a function, called `math_magic`, that takes two numbers as inputs and calculates the sum of the product and the division of both numbers. So, if we put $4$ and $2$, we want it to return $(4 \times 2) + (4 / 2)$ which is `r (4*2)+(4/2)`.
+
+![mathmagic](img/Imagem002.png)
+
+Let's change again the function recipe.
+
+```{}
+my_fun <- function(arg1, arg2) {
+  body
+}
+```
+
+* First, we replace `my_fun` by `math_magic`;
+* Next, we change the arguments of the function to have $2$ inputs, `a` and `b` (note: there is nothing wrong in mantaining `arg1` and `arg2`, as long you keep the body of the function consistent with the names you adopt);
+* Finally, we modify the body. Again, we don't need to include a return statement. Note that R respects the principles of mathematics by calculating first the multiplication and the division and only then performing the adition, so there is no need to use parenthesis here.
+
+```{r}
+math_magic <- function(a, b){
+  a*b + a/b
+}
+```
+
+Sourcing this functions and calling `math_magic(4,2)` gives us the desirable result. Note, however, that `math_magic(4,2)` is not the same as `math_magic(2,4)`. The first produces `r math_magic(4,2)` while the second returns `r math_magic(2,4)`, so keep an eye in the order of the arguments or use `math_magic(a=4, b=2)` in any order you want.
+
+What happens when we try to call `math_magic()` with only one argument? R throws an error, `Error in math_magic(2) : argument "b" is missing, with no default`, because the argument `b` is missing with no default. We could solve this by making this second argument optional. One way to do it is setting the default value equal to $1$.
+
+```{r}
+math_magic <- function(a, b=1){
+  a*b + a/b
+}
+```
+
+Sourcing the function definition again and calling `math_magic(4)` now, gives us `r math_magic(4)`. Because the `b` argument was not specified, R set `b` to $1$, inside the function, so $4$ times $1$ plus $4$ divided by $1$ was computed, resulting in $8$. 
+
+Let's now challenge the math boundaries and call the `math_magic()` function with the numbers $4$ and $0$. `math_magic(4,0)` gives us `r math_magic(4,0)`, R's way of saying infinity. That's because R divided $4$ by $0$ in the second part of the function which leads to infinity. Suppose we want to guard our function against this misuse of the `math_magic()` function, by having the function return $0$ when the `b` argument is $0$. We can simply extend our function with an `if-test` with a return statement inside.
+
+```{r}
+math_magic <- function(a, b=1){
+  if(b == 0){
+    return(0)
+  }
+  a*b + a/b
+}
+```
+
+If we now call the `math_magic()` function with the second argument equal to $0$, the condition for the `if-test` is true and we simply return zero: `math_magic(4,0)` returns `r math_magic(4,0)`. The `return` statement, similar to the `break` statement in a `for` and `while` loop returns something and the rest of the function body is ignored. The `a * b + a / b` part of the function is never reached in this case. Using the `return` statement, which proves to be quite useful here, we can halt the function execution virtually anywhere we want. 
+
 ###  Write yor own function
+
+Wow, things are getting serious... you're about to write your own function! Before you have a go at it, have a look at the following function template:
+
+```{}
+my_fun <- function(arg1, arg2) {
+  body
+}
+```
+
+Notice that this recipe uses the assignment operator (`<-`) just as if you were assigning a vector to a variable for example. This is not a coincidence. Creating a function in R basically is the assignment of a function object to a variable! In the recipe above, you're creating a new R variable `my_fun`, that becomes available in the workspace as soon as you execute the definition. From then on, you can use the `my_fun` as a function.
+
+* Create a function `pow_two()`: it takes one argument and returns that number squared (that number times itself).
+* Call this newly defined function with `12` as input.
+* Next, create a function `sum_abs()`, that takes two arguments and returns the sum of the absolute values of both arguments.
+* Finally, call the function `sum_abs()` with arguments `-2` and `3` afterwards.
+
+```{r}
+# Create a function pow_two()
+pow_two <- function(x){
+  x*x
+}
+
+# Use the function
+pow_two(12)
+
+# Create a function sum_abs()
+sum_abs <- function(x,y){
+  abs(x)+abs(y)  
+}
+
+# Use the function
+sum_abs(-2,3)
+```
 
 ###  Write yor own function (2)
 
+There are situations in which your function does not require an input. Let's say you want to write a function that gives us the random outcome of throwing a fair die:
+
+```{r}
+throw_die <- function() {
+  number <- sample(1:6, size = 1)
+  number
+}
+
+throw_die()
+```
+
+Up to you to code a function that doesn't take any arguments!
+
+* Define a function, `hello()`. It prints out `"Hi there!"` and returns `TRUE`. It has no arguments.
+* Call the function `hello()`, without specifying arguments of course.
+
+```{r}
+# Define the function hello()
+hello <- function(){
+  print("Hi there!")
+  return(TRUE)
+}
+
+# Call the function hello()
+hello()
+```
+
 ###  Write yor own function (3)
+
+Do you still remember the difference between an argument with and without default values? Have another look at the `sd()` function by typing `?sd` in the console. The usage section shows the following information:
+
+```{}
+sd(x, na.rm = FALSE)
+```
+
+This tells us that `x` has to be defined for the `sd()` function to be called correctly, however, `na.rm` already has a default value. Not specifying this argument won't cause an error.
+
+You can define default argument values in your own R functions as well. You can use the following recipe to do so:
+
+```{}
+my_fun <- function(arg1, arg2 = val2) {
+  body
+}
+```
+
+The editor on the right already includes an extended version of the `pow_two()` function from before. Can you finish it?
+
+```{r}
+# Finish the pow_two() function
+pow_two <- function(x) {
+  y <- x ^ 2
+  print(paste(x, "to the power two equals", y))
+  return(y)
+}
+```
+
+* Add an optional argument, named `print_info`, that is `TRUE` by default.
+* Wrap an if construct around the `print()` function: this function should only be executed if `print_info` is TRUE.
+* Feel free to experiment with the `pow_two()` function you've just coded.
+
+```{r}
+# Finish the pow_two() function
+pow_two <- function(x, print_info = TRUE) {
+  y <- x ^ 2
+  if(print_info == TRUE) {
+   print(paste(x, "to the power two equals", y)) 
+  }
+  return(y)
+}
+```
+
+Have you tried calling this `pow_two()` function? Try `pow_two(5)`, `pow_two(5, TRUE)` and `pow_two(5, FALSE)`. Which ones give different results?
+
+```{r}
+pow_two(5)
+pow_two(5, TRUE)
+pow_two(5, FALSE)
+```
 
 ## Function Scoping
 
+Function scoping implies that variables that are defined inside a function are not accessible outside that function. Try running the following code and see if you understand the results:
+
+```{r}
+pow_two <- function(x) {
+  y <- x ^ 2
+  return(y)
+}
+pow_two(4)
+#y
+#x
+```
+
+`y` was defined inside the `pow_two()` function and therefore it is not accessible outside of that function. This is also true for the function's arguments of course - `x` in this case.
+
+Which statement is correct about the following chunk of code? 
+
+```{r}
+two_dice <- function() {
+  possibilities <- 1:6
+  dice1 <- sample(possibilities, size = 1)
+  dice2 <- sample(possibilities, size = 1)
+  dice1 + dice2
+}
+```
+
+1. Executing `two_dice()` causes an error.
+2. Executing `res <- two_dice()` makes the contents of `dice1` and `dice2` available outside the function.
+**3.** Whatever the way of calling the `two_dice()` function, R won't have access to `dice1` and `dice2` outside the function.
+
 ## R passes arguments by value
+
+The title gives it away already: R passes arguments by value. 
+What does this mean? Simply put, it means that an R function cannot change the variable that you input to that function. Let's look at a simple example (try it in the console):
+
+```{r}
+triple <- function(x) {
+  x <- 3*x
+  x
+}
+a <- 5
+triple(a)
+a
+```
+
+Inside the `triple()` function, the argument `x` gets overwritten with its value times three. Afterwards this new `x` is returned. If you call this function with a variable a set equal to `5`, you obtain `15`. But did the value of a change? If R were to pass a to `triple()` by reference, the override of the `x` inside the function would ripple through to the variable `a`, outside the function. However, R passes by value, so the R objects you pass to a function can never change unless you do an explicit assignment. `a` remains equal to `5`, even after calling `triple(a)`.
+
+Can you tell which one of the following statements is **false** about the following piece of code?
+
+```{r}
+increment <- function(x, inc = 1) {
+  x <- x + inc
+  x
+}
+count <- 5
+a <- increment(count, 2)
+b <- increment(count)
+count <- increment(count, 2)
+```
+
+1. `a` and `b` equal `7` and `6` respectively after executing this code block.
+2. After the first call of `increment()`, where a is defined, a equals `7` and count equals `5`.
+**3.** In the end, `count` will equal `10`.
+4. In the last expression, the value of `count` was actually changed because of the explicit assignment.
+
+Given that R passes arguments by value and not by reference, the value of `count` is not changed after the first two calls of `increment()`. Only in the final expression, where `count` is re-assigned explicitly, does the value of `count` change.
 
 ###  R you functional?
 
+Now that you've acquired some skills in defining functions with different types of arguments and return values, you should try to create more advanced functions. As you've noticed in the previous exercises, it's perfectly possible to add control-flow constructs, loops and even other functions to your function body.
+
+Remember our social media example? The vectors `linkedin` and `facebook` are already defined so you can get your hands dirty straight away. As a first step, you will be writing a function that can interpret a single value of this vector. In the next exercise, you will write another function that can handle an entire vector at once.
+
+```{r}
+interpret <- function(num_views) {
+  if (num_views > 15) {
+
+
+  } else {
+
+
+  }
+}
+```
+
+* Finish the function definition for `interpret()`, that interprets the number of profile views on a single day: The function takes one argument, `num_views`.
+* If `num_views` is greater than `15`, the function prints out `"You're popular!"` to the console and returns `num_views`.
+* Else, the function prints out `"Try to be more visible!"` and returns `0`.
+* Finally, call the `interpret()` function twice: on the first value of the `linkedin` vector and on the second element of the `facebook` vector.
+
+```{r}
+# The linkedin and facebook vectors have already been created for you
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+facebook <- c(17, 7, 5, 16, 8, 13, 14)
+
+# Define the interpret function
+interpret <- function(num_views) {
+  if (num_views > 15) {
+    print("You're popular!")
+    return(num_views)
+  } else {
+    print("Try to be more visible!")
+    return(0)
+  }
+}
+
+# Call the interpret function twice
+interpret(linkedin[1])
+interpret(facebook[2])
+```
+
+The annoying thing here is that `interpret()` only takes one argument. Proceed to the next exercise to implement something more useful.
+
 ###  R you functional? (2)
+
+A possible implementation of the `interpret()` function is already available in the editor.
+
+```{r}
+# The linkedin and facebook vectors have already been created for you
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+facebook <- c(17, 7, 5, 16, 8, 13, 14)
+
+# The interpret() can be used inside interpret_all()
+interpret <- function(num_views) {
+  if (num_views > 15) {
+    print("You're popular!")
+    return(num_views)
+  } else {
+    print("Try to be more visible!")
+    return(0)
+  }
+}
+
+# Define the interpret_all() function
+# views: vector with data to interpret
+# return_sum: return total number of views on popular days?
+interpret_all <- function(views, return_sum) {
+  count <- 0
+
+  for (v in views) {
+
+  }
+
+  if (return_sum) {
+
+  } else {
+
+  }
+}
+
+# Call the interpret_all() function on both linkedin and facebook
+```
+
+In this exercise you'll be writing another function that will use the `interpret()` function to interpret all the data from your daily profile views inside a vector. Furthermore, your function will return the sum of views on popular days, if asked for. A `for` loop is ideal for iterating over all the vector elements. The ability to return the sum of views on popular days is something you can code through a function argument with a default value.
+
+Finish the template for the `interpret_all()` function:
+
+* Make `return_sum` an optional argument, that is `TRUE` by default.
+* Inside the for loop, iterate over all `views`: on every iteration, add the result of `interpret(v)` to `count`. Remember that `interpret(v)` returns `v` for popular days, and `0` otherwise. At the same time, `interpret(v)` will also do some printouts.
+* Finish the if construct:
+    * If `return_sum` is `TRUE`, return `count`.
+    * Else, return `NULL`.
+* Call this newly defined function on both `linkedin` and `facebook`.
+
+```{r}
+# The linkedin and facebook vectors have already been created for you
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+facebook <- c(17, 7, 5, 16, 8, 13, 14)
+
+# The interpret() can be used inside interpret_all()
+interpret <- function(num_views) {
+  if (num_views > 15) {
+    print("You're popular!")
+    return(num_views)
+  } else {
+    print("Try to be more visible!")
+    return(0)
+  }
+}
+
+# Define the interpret_all() function
+# views: vector with data to interpret
+# return_sum: return total number of views on popular days?
+interpret_all <- function(views, return_sum = TRUE) {
+  count <- 0
+  for (v in views) {
+    count <- count + interpret(v)
+  }
+
+  if (return_sum) {
+    return(count)
+  } else {
+    return(NULL)
+  }
+}
+
+# Call the interpret_all() function on both linkedin and facebook
+interpret_all(linkedin)
+interpret_all(facebook)
+```
+
+Have a look at the results; it appears that the sum of views on popular days are the same for Facebook and LinkedIn, what a coincidence! Your different social profiles must be fairly balanced ;-) Head over to the next video!
 
 ## R packages
 
+Let's do a brief recap. 
+
+* First, you've learned about the different ways to use R's built-in functions;
+* Second, you took full control by actually creating your own R functions. You can use these newly defined functions just as we use R's built-in functions like `mean`, `list` and `sample`, just to name a few. 
+
+But wait? How come these functions are "built-in"? These functions are not in my workspace, so how on Earth does R know where to find these functions `mean`, `list` and `sample`? 
+
+Well, all these R's built-in functions are part of R packages that are loaded in the R session. R packages are bundles of code, data, documentation and tests that are easy to share with others. For example, the `mean`, `list` and `sample` functions are all part of the `base` package, which contains the basic functionalities to use R. Another example of package, specific for data visualization, is the `ggvis` package.
+
+Before you can use a package, you need to install it. The `base` package is automatically installed when you install R. The `ggvis` package, on other hand, won't come with the bundled R installation. But fear not, it can be easily installed using R console with the `install.packages("ggvis")` function (which, by the way, is a function of the `utils` package). 
+
+The `install.packages` function goes to CRAN (Comprehensive R Archive Network), the official repository where thousands of packages are available.The function downloads a package file and installs in your system. All of this is done with a single command in R.
+
+If you run `install.packages("ggvis")` you install the `ggvis` package but can't use it yet. In order to run a package, you need to load it in your current R session (every time) by using the function `library(ggvis)` (note that now you don't need the quotes). When R loads a package, it actually attaches it to the search list. This is a list of packages and environments that R looks through to find the variable or function you want to use. To have a look at this list, you can use the `search()` function.
+
+```{}
+search()
+[1] ".GlobalEnv" ... "Autoloads"  "package:base"
+```
+
+Whenever you execute code that depends on any other variable or function, R goes through all those packages, one after the other, to find it. Apart from the packages loaded in our R section, we also see the `.GlobalEnv`. This is our own workspace, where the user-defined R objects live. You can also see that `search` path already contains a bunch of packages. When R is started, it loads $7$ packages on default, among which is the base package. Others includes the `utils`, `datasets` and `methods` package. That's why, when you start R, you can use the `mean` function, or the `install.packages` function, without having to explicitly load the package.
+
+The `ggvis` package that we've installed earlier, however, won't be loaded automatically. If we try to access the `ggvis` function `ggvis(mtcars, ~wt, ~hp)`, R will return an error, telling us that the function ggvis could not be found.
+
+```{}
+# It's not a proper R chunk because errors will cause Markdown to stop
+ggvis(mtcars, ~wt, ~hp)
+Error: could not find function "ggvis"
+```
+
+That's occur because `ggvis` is not yet in the search list. To access `ggvis` funcionality, we'll have to load the package using the `library` command. This command takes the name of the package and adds the package to the `search` list, right after the global environment, making all the functions, data and precompiled code it contains available and ready to be used.
+
+```{r}
+#install.packages("ggvis")
+library(ggvis)
+search()
+```
+
+Indeed, ggvis is now part of the search list. If we now execute the same command, a pretty graph shows up.
+
+```{r}
+ggvis(mtcars, ~wt, ~hp)
+```
+
+The `require` function, just like the library function, loads packages into your R session. The only difference appears when you are trying to load a package that is not yet installed. Let's say you want to load the `data.table` package, a package to perform data manipulation, but pretend this package is not yet installed. If you call `library(data.table)`, R throws an error: `Error in library("data.table"): there is no package called 'data.table'.`. However, when you execute `require("data.table")`, you get a warning: `Loading required package: data.table. Warning message: ...`.Also, the result of this require function will be FALSE if attaching the package failed (try `result <- require("data.table")`). This is a good alternative when you want to avoid error, for example when you're attaching packages dynamically inside functions. 
+
+So, to wrap up:
+
+* The `install.packages()` function installs packages for you, while `library()` and `require` load them for you.
+* And when you are loading packages, you're attaching them to a search list, making them available in your current R session.
+
+Before you start writing your own functions, first do a quick search for packages that do the same thing. You can simply install and load the package, have a loot at the documentation and avoid having to rewrite a bunch of code that's already been written. This doesn't mean that you should never write your own functions, but for common problems such as data handling, there are some pretty neat packages out there that will get you up and running in no time. 
+
 ###  Load an R package
+
+There are basically two extremely important functions when it comes down to R packages:
+
+* `install.packages()`, which as you can expect, installs a given package.
+* `library()` which loads packages, i.e. attaches them to the search list on your R workspace.
+To install packages, you need administrator privileges. 
+
+In this exercise, you'll be learning how to load the `ggplot2` package, a powerful package for data visualization. You'll use it to create a plot of two variables of the `mtcars` data frame. The data has already been prepared for you in the workspace.
+
+Before starting, execute the following commands in the console:
+
+* `search()`, to look at the currently attached packages and
+* `qplot(mtcars$wt, mtcars$hp)`, to build a plot of two variables of the mtcars data frame.
+An error should occur, because you haven't loaded the ggplot2 package yet!
+
+* To fix the error you saw in the console, load the `ggplot2` package.
+* Now, retry calling the `qplot()` function with the same arguments.
+* Finally, check out the currently attached packages again.
+
+```{r}
+# Load the ggplot2 package
+library(ggplot2)
+
+# Retry the qplot() function
+qplot(mtcars$wt, mtcars$hp)
+
+# Check out the currently attached packages again
+search()
+```
 
 ###  Different ways to load a package
 
+The `library()` and `require()` functions are not very picky when it comes down to argument types: both `library(rjson)` and `library("rjson")` work perfectly fine for loading a package.
+
+Have a look at some more code chunks that (attempt to) load one or more packages:
+
+```{r, eval = FALSE}
+# Chunk 1
+library(data.table)
+require(rjson)
+
+# Chunk 2
+library("data.table")
+require(rjson)
+
+# Chunk 3
+library(data.table)
+require(rjson, character.only = TRUE)
+
+# Chunk 4
+library(c("data.table", "rjson"))
+```
+
+Select the option that lists all of the chunks that do not generate an error.
+
+1. Only (1)
+**2.** (1) and (2)
+3. (1), (2) and (3)
+4. All of them are valid.
+
+Indeed, only chunk 1 and chunk 2 are correct. Can you figure out why the last two aren't valid? This exercise concludes the chapter on functions. Well done!
